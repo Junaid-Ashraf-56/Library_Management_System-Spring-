@@ -5,13 +5,15 @@ public class Book {
     private String title;
     private String author;
     private int isbn;
+    private int copies;
     private boolean available;
 
-    public Book(int bookId, String title, String author, int isbn, boolean available) {
+    public Book(int bookId, String title, String author, int isbn, int copies, boolean available) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;
         this.isbn = isbn;
+        this.copies = copies;
         this.available = available;
     }
 
@@ -29,4 +31,7 @@ public class Book {
 
     public boolean isAvailable() {return available;}
     public void setAvailable(boolean available) {this.available = available;}
+
+    public int getCopies() {return copies;}
+    public void setCopies(int copies) {this.copies = copies;}
 }

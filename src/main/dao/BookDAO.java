@@ -10,4 +10,5 @@ public interface BookDAO {
     Book getBookById(int id);
     void updateBook(Book book);
     void deleteBook(int id);
+    Book getBookByIsbn(int isbn);
 }
