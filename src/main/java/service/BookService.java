@@ -1,7 +1,7 @@
-package main.service;
+package service;
 
-import main.dao.BookDAO;
-import main.model.Book;
+import dao.BookDAO;
+import model.Book;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

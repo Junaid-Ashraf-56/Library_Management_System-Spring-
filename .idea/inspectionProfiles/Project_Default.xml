@@ -9,16 +9,19 @@
         <list>
           <option value="Library_Management_Sysytem" />
           <option value="Library_Management_Sysytem" />
+          <option value="library-system" />
         </list>
       </option>
       <option name="ignoredPackages">
         <list>
           <option value="org.springframework:spring-beans:5.3.39" />
           <option value="org.springframework:spring-context:5.3.39" />
+          <option value="org.springframework:spring-beans:5.3.39" />
         </list>
       </option>
       <option name="ignoredReasons">
         <list>
+          <option value="Not exploitable" />
           <option value="Not exploitable" />
           <option value="Not exploitable" />
         </list>

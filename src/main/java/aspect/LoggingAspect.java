@@ -1,4 +1,4 @@
-package main.aspect;
+package aspect;
 
 public class LoggingAspect {
 }

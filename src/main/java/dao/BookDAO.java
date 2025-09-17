@@ -1,7 +1,6 @@
-package main.dao;
+package dao;
 
-import main.model.Book;
-
+import model.Book;
 import java.util.List;
 
 public interface BookDAO {

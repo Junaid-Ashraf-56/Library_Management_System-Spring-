@@ -1,12 +1,12 @@
-package main.dao;
+package dao;
 
-import main.model.Book;
+import model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
-public class BookDAOImpl implements BookDAO{
+public class BookDAOImpl implements BookDAO {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
