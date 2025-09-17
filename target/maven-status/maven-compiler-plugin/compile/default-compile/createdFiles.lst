@@ -1,0 +1,13 @@
+dao/BookDAOImpl.class
+controller/PersonController.class
+aspect/LoggingAspect.class
+model/Book.class
+Main.class
+model/Person.class
+dao/PersonDAO.class
+controller/BookController.class
+config/AppConfig.class
+dao/BookDAO.class
+service/PersonService.class
+service/BookService.class
+dao/PersonDAOImpl.class

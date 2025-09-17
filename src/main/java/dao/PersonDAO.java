@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface PersonDAO {
     void addPerson(Person person);
-    void getPersonByLibId(int id);
+    Person getPersonByLibId(int id);
     List<Person> getAllPerson();
-    void updatePerson();
-    void deletePerson(Person person);
-
+    void updatePerson(Person person);
+    void deletePerson(int id);
+    Person getPersonByEmail(String email);
 }
