@@ -42,4 +42,8 @@ public class BookService {
     public void updateBook(Book book){
         bookDAO.updateBook(book);
     }
+    public String getBookByTitle(String title){
+        bookDAO.getBookByTitle(title);
+        return title;
+    }
 }

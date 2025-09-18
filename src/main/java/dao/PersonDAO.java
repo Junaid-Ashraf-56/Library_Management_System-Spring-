@@ -11,4 +11,5 @@ public interface PersonDAO {
     void updatePerson(Person person);
     void deletePerson(int id);
     Person getPersonByEmail(String email);
+    public int getPersonLibByEmail(String email);
 }

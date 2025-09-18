@@ -4,6 +4,7 @@ import model.Book;
 import service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import service.BorrowService;
 
 import java.util.List;
 
@@ -11,9 +12,11 @@ import java.util.List;
 @RequestMapping("/books")
 public class BookController {
     private final BookService bookService;
+    private final BorrowService borrowService;
     @Autowired
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, BorrowService borrowService) {
         this.bookService = bookService;
+        this.borrowService = borrowService;
     }
     @PostMapping
     public String addBook(@RequestBody Book book) {
@@ -38,5 +41,17 @@ public class BookController {
     public String deleteBook(@PathVariable int id) {
         bookService.deleteBook(id);
         return "Book deleted successfully!";
+    }
+
+    public void borrowBook(int personId,int bookId){
+        borrowService.borrowBook(personId,bookId);
+    }
+
+    public void returnBook(int personId,int bookId){
+        borrowService.returnBook(personId,bookId);
+    }
+
+    public String bookIsbn(String title){
+        return bookService.getBookByTitle(title);
     }
 }

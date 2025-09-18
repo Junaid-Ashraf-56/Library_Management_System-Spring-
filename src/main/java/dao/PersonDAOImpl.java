@@ -76,6 +76,16 @@ public class PersonDAOImpl implements PersonDAO{
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
-
     }
+
+    @Override
+    public int getPersonLibByEmail(String email) {
+        String sql = "SELECT libraryId FROM person WHERE email = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{email}, Integer.class);
+        } catch (EmptyResultDataAccessException e) {
+            return -1; // or throw a custom exception
+        }
+    }
+
 }
