@@ -15,6 +15,9 @@ public class Person {
         this.email = email;
     }
 
+    public Person() {
+    }
+
     public int getLibraryId() {return libraryId;}
     public void setLibraryId(int libraryId) {this.libraryId = libraryId;}
 

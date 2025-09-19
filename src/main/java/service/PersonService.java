@@ -52,7 +52,7 @@ public class PersonService {
     private int generateUniqueLibraryId() {
         return (int)(System.currentTimeMillis() % 100000);
     }
-    public int getLibId(String email){
+    public Person getLibId(String email){
         return personDAO.getPersonLibByEmail(email);
     }
 }

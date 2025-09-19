@@ -79,13 +79,22 @@ public class PersonDAOImpl implements PersonDAO{
     }
 
     @Override
-    public int getPersonLibByEmail(String email) {
-        String sql = "SELECT libraryId FROM person WHERE email = ?";
+    public Person getPersonLibByEmail(String email) {
+        String sql = "SELECT libraryId, name, borrowBooks, borrowBooksName, email FROM person WHERE email = ?";
         try {
-            return jdbcTemplate.queryForObject(sql, new Object[]{email}, Integer.class);
+            return jdbcTemplate.queryForObject(sql, new Object[]{email}, (rs, rowNum) -> {
+                Person person = new Person();
+                person.setLibraryId(rs.getInt("libraryId"));
+                person.setName(rs.getString("name"));
+                person.setBorrowBooks(rs.getInt("borrowBooks"));
+                person.setBorrowBooksName(rs.getString("borrowBooksName"));
+                person.setEmail(rs.getString("email"));
+                return person;
+            });
         } catch (EmptyResultDataAccessException e) {
-            return -1; // or throw a custom exception
+            return null;
         }
     }
+
 
 }

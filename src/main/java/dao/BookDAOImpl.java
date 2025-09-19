@@ -72,9 +72,9 @@ public class BookDAOImpl implements BookDAO {
     }
 
     @Override
-    public void getBookByTitle(String title) {
+    public Book getBookByTitle(String title) {
         String sql = "SELECT isbn FROM books WHERE title = %?%";
-        jdbcTemplate.queryForObject(sql, new Object[]{title}, (rs, rowNum) -> new Book(
+        return jdbcTemplate.queryForObject(sql, new Object[]{title}, (rs, rowNum) -> new Book(
                 rs.getInt("id"),
                 rs.getString("title"),
                 rs.getString("author"),

@@ -16,6 +16,10 @@ public class Book {
         this.copies = copies;
         this.available = available;
     }
+
+    public Book() {
+    }
+
     public int getBookId() {return bookId;}
     public void setBookId(int bookId) {this.bookId = bookId;}
 
