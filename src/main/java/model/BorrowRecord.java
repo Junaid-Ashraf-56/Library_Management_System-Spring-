@@ -5,21 +5,21 @@ import java.time.LocalDate;
 public class BorrowRecord {
     private int borrowId;
     private int libraryId;
-    private int bookId;
+    private int isbn;
     private LocalDate borrowDate;
     private LocalDate returnDate;
 
     public BorrowRecord(int id, int personId, int bookId, LocalDate borrowDate, LocalDate returnDate) {
         this.borrowId = id;
         this.libraryId = personId;
-        this.bookId = bookId;
+        this.isbn = bookId;
         this.borrowDate = borrowDate;
         this.returnDate = returnDate;
     }
 
-    public BorrowRecord(int personId, int bookId) {
+    public BorrowRecord(int personId, int isbn) {
         this.libraryId = personId;
-        this.bookId = bookId;
+        this.isbn = isbn;
     }
 
     public int getBorrowId() {return borrowId;}
@@ -28,8 +28,8 @@ public class BorrowRecord {
     public int getLibraryId() {return libraryId;}
     public void setLibraryId(int libraryId) {this.libraryId = libraryId;}
 
-    public int getBookId() {return bookId;}
-    public void setBookId(int bookId) {this.bookId = bookId;}
+    public int getIsbn() {return isbn;}
+    public void setIsbn(int isbn) {this.isbn = isbn;}
 
     public LocalDate getBorrowDate() {return borrowDate;}
     public void setBorrowDate(LocalDate borrowDate) {this.borrowDate = borrowDate;}

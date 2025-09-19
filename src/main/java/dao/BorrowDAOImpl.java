@@ -16,11 +16,10 @@ public class BorrowDAOImpl implements BorrowDAO{
 
     @Override
     public void save(BorrowRecord record) {
-        String sql = "INSERT INTO borrow(borrowId,personId,bookId,borrowDate,returnDate) Values(?,?,?,?,?)";
+        String sql = "INSERT INTO borrow(libraryId,isbn,borrowDate,returnDate) Values(?,?,?,?)";
         jdbcTemplate.update(sql,
-                record.getBorrowId(),
                 record.getLibraryId(),
-                record.getBookId(),
+                record.getIsbn(),
                 record.getBorrowDate(),
                 record.getReturnDate());
     }
@@ -32,22 +31,22 @@ public class BorrowDAOImpl implements BorrowDAO{
                 new Object[]{id},(rs, rowNum) -> new BorrowRecord(
                         rs.getInt("borrowId"),
                         rs.getInt("personId"),
-                        rs.getInt("bookId"),
+                        rs.getInt("isbn"),
                         rs.getDate("borrowDate").toLocalDate(),
                         rs.getDate("returnDate").toLocalDate()
                 ));
     }
 
     @Override
-    public BorrowRecord findByPersonAndBook(int personId, int bookId) {
-        String sql = "SELECT * FROM borrow WHERE personId = ? AND bookId = ?";
+    public BorrowRecord findByPersonAndBook(int personId, int isbn) {
+        String sql = "SELECT * FROM borrow WHERE libraryId = ? AND isbn = ?";
         return jdbcTemplate.queryForObject(sql,
-                new Object[]{personId,bookId},(rs, rowNum) -> new BorrowRecord(
+                new Object[]{personId,isbn},(rs, rowNum) -> new BorrowRecord(
                         rs.getInt("borrowId"),
-                        rs.getInt("personId"),
-                        rs.getInt("bookId"),
+                        rs.getInt("libraryId"),
+                        rs.getInt("isbn"),
                         rs.getDate("borrowDate").toLocalDate(),
-                        rs.getDate("returnDate").toLocalDate()
+                        rs.getDate("returnDate") != null ? rs.getDate("returnDate").toLocalDate() : null
                 ));
     }
 
@@ -58,7 +57,7 @@ public class BorrowDAOImpl implements BorrowDAO{
                 new Object[]{personId},(rs, rowNum) -> new BorrowRecord(
                         rs.getInt("borrowId"),
                         rs.getInt("personId"),
-                        rs.getInt("bookId"),
+                        rs.getInt("isbn"),
                         rs.getDate("borrowDate").toLocalDate(),
                         rs.getDate("returnDate").toLocalDate()
                 ));
@@ -71,7 +70,7 @@ public class BorrowDAOImpl implements BorrowDAO{
                 new Object[]{},(rs, rowNum) -> new BorrowRecord(
                         rs.getInt("borrowId"),
                         rs.getInt("personId"),
-                        rs.getInt("bookId"),
+                        rs.getInt("isbn"),
                         rs.getDate("borrowDate").toLocalDate(),
                         rs.getDate("returnDate").toLocalDate()
                 ));
@@ -85,20 +84,20 @@ public class BorrowDAOImpl implements BorrowDAO{
 
     @Override
     public void update(BorrowRecord record) {
-        String sql = "UPDATE borrow SET returnDate = ?,borrowDate = ? WHERE personId = ? AND bookId = ?";
+        String sql = "UPDATE borrow SET returnDate = ?,borrowDate = ? WHERE libraryId = ? AND isbn = ?";
         jdbcTemplate.update(sql,
                 record.getReturnDate(),
                 record.getBorrowDate(),
                 record.getLibraryId(),
-                record.getBookId()
+                record.getIsbn()
         );
     }
     @Override
     public List<String> getBorrowedBookNames(int libraryId) {
         String sql = """
         SELECT b.title
-        FROM borrow_record br
-        JOIN book b ON br.bookId = b.bookId
+        FROM borrow br
+        JOIN books b ON br.isbn = b.isbn
         WHERE br.libraryId = ? AND br.returnDate IS NULL
     """;
         return jdbcTemplate.query(sql, new Object[]{libraryId}, (rs, rowNum) -> rs.getString("title"));
@@ -107,8 +106,8 @@ public class BorrowDAOImpl implements BorrowDAO{
     public List<String> getReturnedBookNames(int libraryId) {
         String sql = """
         SELECT b.title
-        FROM borrow_record br
-        JOIN book b ON br.bookId = b.bookId
+        FROM borrow br
+        JOIN books b ON br.isbn = b.isbn
         WHERE br.libraryId = ? AND br.returnDate IS NOT NULL
     """;
         return jdbcTemplate.query(sql, new Object[]{libraryId}, (rs, rowNum) -> rs.getString("title"));

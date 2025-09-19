@@ -26,13 +26,17 @@ public class PersonDAOImpl implements PersonDAO{
     @Override
     public Person getPersonByLibId(int id) {
         String sql = "SELECT * FROM person WHERE libraryId = ?";
-        return jdbcTemplate.queryForObject(sql,new Object[]{id},(rs,rowNum)-> new Person(
-           rs.getInt("libraryId"),
-           rs.getString("name"),
-           rs.getInt("borrowBooks"),
-           rs.getString("borrowBooksName"),
-           rs.getString("email")
-        ));
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) -> new Person(
+                    rs.getInt("libraryId"),
+                    rs.getString("name"),
+                    rs.getInt("borrowBooks"),
+                    rs.getString("borrowBooksName"),
+                    rs.getString("email")
+            ));
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override

@@ -23,8 +23,8 @@ public class BorrowService {
     }
 
     @Transactional
-    public void borrowBook(int personId,int bookId) throws IllegalStateException {
-        Book book = bookDAO.getBookById(bookId);
+    public void borrowBook(int personId,int isbn) throws IllegalStateException {
+        Book book = bookDAO.getBookByIsbn(isbn);
         if (book == null || !book.isAvailable()){
             throw new IllegalStateException("Book is not available");
         }
@@ -36,17 +36,18 @@ public class BorrowService {
         bookDAO.updateBook(book);
 
 
-        BorrowRecord record = new BorrowRecord(personId,bookId);
+        BorrowRecord record = new BorrowRecord(personId,isbn);
+        record.setBorrowDate(LocalDate.now());
         borrowDAO.save(record);
     }
 
     @Transactional
-    public void returnBook(int personId,int bookId) throws IllegalStateException {
-        BorrowRecord borrowRecord = borrowDAO.findByPersonAndBook(personId,bookId);
+    public void returnBook(int personId,int isbn) throws IllegalStateException {
+        BorrowRecord borrowRecord = borrowDAO.findByPersonAndBook(personId, isbn);
         if (borrowRecord == null){
             throw new IllegalStateException("Record not found");
         }
-        Book book = bookDAO.getBookById(bookId);
+        Book book = bookDAO.getBookByIsbn(isbn);
         if (book==null){
             throw new IllegalStateException("Book not found");
         }

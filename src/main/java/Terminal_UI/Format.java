@@ -15,21 +15,24 @@ public class Format {
         System.out.println("╚" + border + "╝");
     }
     public static void printBookTable(List<Book> books) {
-        String format = "| %-5s | %-20s | %-15s | %-6s | %-10s |%n";
-        System.out.println("╔═════╦════════════════════╦═══════════════╦═══════╦════════════╗");
-        System.out.printf(format, "ID", "Title", "Author", "Copies", "Available");
-        System.out.println("╠═════╬════════════════════╬═══════════════╬═══════╬════════════╣");
+        String format = "| %-6s | %-30s | %-20s | %-12s | %-8s | %-10s |%n";
+        System.out.println("╔══════╦════════════════════════════════╦════════════════════╦════════════╦════════╦════════════╗");
+        System.out.printf(format, "ID", "Title", "Author", "ISBN", "Copies", "Available");
+        System.out.println("╠══════╬════════════════════════════════╬════════════════════╬════════════╬════════╬════════════╣");
         for (Book book : books) {
             System.out.printf(format,
                     book.getBookId(),
                     book.getTitle(),
                     book.getAuthor(),
+                    book.getIsbn(),
                     book.getCopies(),
                     book.isAvailable() ? "Yes" : "No"
             );
         }
-        System.out.println("╚═════╩════════════════════╩═══════════════╩═══════╩════════════╝");
+        System.out.println("╚══════╩════════════════════════════════╩════════════════════╩════════════╩════════╩════════════╝");
     }
+
+
 
     public static void printPersonTable(List<Person> persons) {
         String format = "| %-5s | %-15s | %-25s | %-6s | %-20s |%n";

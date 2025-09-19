@@ -2,6 +2,7 @@ package dao;
 
 import model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -24,9 +25,9 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public Book getBookById(int id) {
-        String sql = "SELECT * FROM books WHERE id = ?";
+        String sql = "SELECT * FROM books WHERE bookId = ?";
         return jdbcTemplate.queryForObject(sql,new Object[]{id},(rs,rowNum) -> new Book(
-                rs.getInt("id"),
+                rs.getInt("bookId"),
                 rs.getString("title"),
                 rs.getString("author"),
                 rs.getInt("isbn"),
@@ -39,7 +40,7 @@ public class BookDAOImpl implements BookDAO {
     public List<Book> getAllBook() {
         String sql = "SELECT * FROM books";
         return jdbcTemplate.query(sql,((rs, rowNum) -> new Book(
-                rs.getInt("id"),
+                rs.getInt("bookId"),
                 rs.getString("title"),
                 rs.getString("author"),
                 rs.getInt("isbn"),
@@ -50,34 +51,50 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public void updateBook(Book book) {
-        String sql = "UPDATE books set title = ?,set author = ?,set isbn = ?,set copies = ?,set available = ? WHERE bookId = ?";
-        jdbcTemplate.update(sql,book.getTitle(),book.getAuthor(),book.getIsbn(),book.isAvailable());
+        String sql = "UPDATE books SET title = ?, author = ?, isbn = ?, copies = ?, available = ? WHERE bookId = ?";
+        jdbcTemplate.update(sql,
+                book.getTitle(),
+                book.getAuthor(),
+                book.getIsbn(),
+                book.getCopies(),
+                book.isAvailable(),
+                book.getBookId()
+        );
     }
+
 
     @Override
     public void deleteBook(int id) {
-        String sql = "DELETE FROM books WHERE id = ?";
+        String sql = "DELETE FROM books WHERE isbn = ?";
         jdbcTemplate.update(sql,id);
     }
 
-    @Override
     public Book getBookByIsbn(int isbn) {
         String sql = "SELECT * FROM books WHERE isbn = ?";
-        return jdbcTemplate.queryForObject(sql,new Object[]{isbn},(rs, rowNum) -> new Book(
-            rs.getInt("id"),
-            rs.getString("title"),
-            rs.getString("author"),
-            rs.getInt("isbn"),
-            rs.getInt("copies"),
-            rs.getBoolean("available")
-        ));
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{isbn}, (rs, rowNum) -> {
+                Book book = new Book();
+                book.setBookId(rs.getInt("bookId"));
+                book.setTitle(rs.getString("title"));
+                book.setAuthor(rs.getString("author"));
+                book.setIsbn(rs.getInt("isbn"));
+                book.setCopies(rs.getInt("copies"));
+                book.setAvailable(rs.getBoolean("available"));
+                return book;
+            });
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
+
 
     @Override
     public Book getBookByTitle(String title) {
-        String sql = "SELECT isbn FROM books WHERE title = %?%";
-        return jdbcTemplate.queryForObject(sql, new Object[]{title}, (rs, rowNum) -> new Book(
-                rs.getInt("id"),
+        String sql = "SELECT * FROM books WHERE title LIKE ?";
+        String searchPattern = "%" + title + "%";
+
+        return jdbcTemplate.queryForObject(sql, new Object[]{searchPattern}, (rs, rowNum) -> new Book(
+                rs.getInt("bookId"),
                 rs.getString("title"),
                 rs.getString("author"),
                 rs.getInt("isbn"),
@@ -85,4 +102,5 @@ public class BookDAOImpl implements BookDAO {
                 rs.getBoolean("available")
         ));
     }
+
 }

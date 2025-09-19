@@ -2,7 +2,6 @@ package service;
 
 import dao.BookDAO;
 import model.Book;
-import org.aspectj.lang.annotation.AdviceName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,18 +16,14 @@ public class BookService {
         this.bookDAO = bookDAO;
     }
 
-    public void addBook(Book book){
-        if (book.getTitle() == null || book.getTitle().isEmpty()){
-            throw new IllegalArgumentException("Book title not found");
-        }
+    public void addBook(Book book) {
         Book existing = bookDAO.getBookByIsbn(book.getIsbn());
-        if (existing!=null){
-            int copies = existing.getCopies()+book.getCopies();
-            existing.setCopies(copies);
-        }else {
-            bookDAO.addBook(book);
+        if (existing != null) {
+            throw new IllegalArgumentException("A book with ISBN " + book.getIsbn() + " already exists.");
         }
+        bookDAO.addBook(book);
     }
+
 
     public Book getBookById(int id){
         return bookDAO.getBookById(id);
@@ -47,5 +42,8 @@ public class BookService {
     }
     public Book getBookByTitle(String title){
         return bookDAO.getBookByTitle(title);
+    }
+    public Book getBookByIsbn(int isbn){
+        return bookDAO.getBookByIsbn(isbn);
     }
 }

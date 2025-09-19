@@ -52,8 +52,10 @@ public class PersonService {
     }
 
     private int generateUniqueLibraryId() {
-        return (int)(System.currentTimeMillis() % 100000);
+        int raw = (int)(System.currentTimeMillis() % 1000000);
+        return raw < 100000 ? raw + 100000 : raw;
     }
+
     public Person getLibId(String email){
         return personDAO.getPersonLibByEmail(email);
     }

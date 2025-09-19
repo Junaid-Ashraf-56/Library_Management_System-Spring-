@@ -100,7 +100,7 @@ public class ConsoleUI {
                 case "3" -> {
                     System.out.println("Enter ISBN of the book");
                     int isbn = Integer.parseInt(sc.nextLine());
-                    Book existing = bookService.getBookById(isbn);
+                    Book existing = bookService.getBookByIsbn(isbn);
                     if (existing == null){
                         System.out.println("Book not found");
                     }
@@ -192,14 +192,24 @@ public class ConsoleUI {
                 case "3" -> {
                     System.out.println("Enter your library Id");
                     int libId = Integer.parseInt(sc.nextLine());
+                    Person person = personService.getPersonByLibId(libId);
+                    if (person==null){
+                        printBoxedMessage("Person not found");
+                        return;
+                    }
                     List<String> borrowedBooks = borrowService.borrowBooks(libId);
-                    printBookList("Borrowed Book Names logic here",borrowedBooks);
+                    printBookList("Borrowed Book Names",borrowedBooks);
                 }
                 case "4" ->{
                     System.out.println("Enter your library Id");
                     int libId = Integer.parseInt(sc.nextLine());
+                    Person person = personService.getPersonByLibId(libId);
+                    if (person==null){
+                        printBoxedMessage("Person not found");
+                        return;
+                    }
                     List<String> returnBooks = borrowService.returnBooks(libId);
-                    printBookList("Returned Book Names logic here",returnBooks);
+                    printBookList("Returned Book Names",returnBooks);
                 }
                 case "5" -> {
                     printBoxedMessage("Search Book ISBN BY title: ");
