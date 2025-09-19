@@ -4,16 +4,19 @@ import dao.BookDAO;
 import dao.BorrowDAO;
 import model.Book;
 import model.BorrowRecord;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class BorrowService {
     private final BookDAO bookDAO;
     private final BorrowDAO borrowDAO;
 
+    @Autowired
     public BorrowService(BookDAO bookDAO, BorrowDAO borrowDAO) {
         this.bookDAO = bookDAO;
         this.borrowDAO = borrowDAO;
@@ -54,5 +57,12 @@ public class BorrowService {
         }
         bookDAO.updateBook(book);
         borrowDAO.update(borrowRecord);
+    }
+
+    public List<String> borrowBooks(int libId){
+        return borrowDAO.getBorrowedBookNames(libId);
+    }
+    public List<String> returnBooks(int libId){
+        return borrowDAO.getReturnedBookNames(libId);
     }
 }

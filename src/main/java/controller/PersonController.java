@@ -46,7 +46,7 @@ public class PersonController {
         return "Person deleted successfully!";
     }
     @GetMapping("/libId")
-    public int getLibId(String email){
+    public Person getLibId(String email){
         return personService.getLibId(email);
     }
 }

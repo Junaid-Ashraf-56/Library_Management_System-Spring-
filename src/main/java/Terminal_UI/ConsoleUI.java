@@ -16,20 +16,22 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
 
+import static Terminal_UI.Format.*;
+
 @Component
 public class ConsoleUI {
     private final AdminController adminController;
     private final BorrowService borrowService;
     private final PersonService personService;
     private final BookService bookService;
-    private final Format format;
+
+
     @Autowired
     public ConsoleUI(AdminController adminController, BorrowService borrowService, PersonService personService, BookService bookService, Format format) {
         this.adminController = adminController;
         this.borrowService = borrowService;
         this.personService = personService;
         this.bookService = bookService;
-        this.format = format;
     }
 
     public void start() {
@@ -72,7 +74,7 @@ public class ConsoleUI {
                     person.setBorrowBooks(0);
                     person.setBorrowBooksName("");
                     adminController.addPerson(person);
-                    format.printBoxedMessage("Person added successfully.");
+                    printBoxedMessage("Person added successfully.");
                 }
                 case "2" ->{
                     System.out.println("Enter book title");
@@ -93,7 +95,7 @@ public class ConsoleUI {
                     book.setCopies(copies);
                     book.setAvailable(isAvailable);
                     adminController.addBook(book);
-                    format.printBoxedMessage("Book Added successfully");
+                    printBoxedMessage("Book Added successfully");
                 }
                 case "3" -> {
                     System.out.println("Enter ISBN of the book");
@@ -120,32 +122,32 @@ public class ConsoleUI {
                     book.setCopies(copies);
                     book.setAvailable(isAvailable);
                     adminController.manageBooks(book);
-                    format.printBoxedMessage("Book Updated successfully");
+                    printBoxedMessage("Book Updated successfully");
                 }
                 case "4" -> {
                     List<Person> personList = adminController.listAllPersons();
-                    format.printBoxedMessage(" Registered Persons:");
-                    format.printPersonTable(personList);
+                    printBoxedMessage(" Registered Persons:");
+                    printPersonTable(personList);
                 }
                 case "5" -> {
                     List<Book> books = adminController.listAllBook();
-                    format.printBoxedMessage("Added Books");
-                    format.printBookTable(books);
+                    printBoxedMessage("Added Books");
+                    printBookTable(books);
                 }
                 case "6" ->{
                     System.out.println("Enter Library Id for deleting it");
                     int libId = Integer.parseInt(sc.nextLine());
                     adminController.deletePerson(libId);
-                    format.printBoxedMessage("Person delete success fully");
+                    printBoxedMessage("Person delete success fully");
                 }
                 case "7" -> {
                     System.out.println("Enter ISBN for deleting it");
                     int isbn = Integer.parseInt(sc.nextLine());
                     adminController.deleteBook(isbn);
-                    format.printBoxedMessage("Book delete success fully");
+                    printBoxedMessage("Book delete success fully");
                 }
                 case "8" -> back = true;
-                default -> format.printBoxedMessage("Invalid choice.");
+                default -> printBoxedMessage("Invalid choice.");
             }
         }
     }
@@ -168,9 +170,9 @@ public class ConsoleUI {
 
                     try {
                         borrowService.borrowBook(personId, bookId);
-                        format.printBoxedMessage("Book borrowed successfully.");
+                        printBoxedMessage("Book borrowed successfully.");
                     } catch (Exception e) {
-                        format.printBoxedMessage("Failed to borrow book: " + e.getMessage());
+                        printBoxedMessage("Failed to borrow book: " + e.getMessage());
                     }
                 }
                 case "2" -> {
@@ -182,22 +184,32 @@ public class ConsoleUI {
 
                     try {
                         borrowService.returnBook(personId, bookId);
-                        format.printBoxedMessage("Book returned successfully.");
+                        printBoxedMessage("Book returned successfully.");
                     } catch (Exception e) {
-                        format.printBoxedMessage("Failed to return book: " + e.getMessage());
+                        printBoxedMessage("Failed to return book: " + e.getMessage());
                     }
                 }
-                case "3" -> System.out.println("Borrowed Book Names logic here");
-                case "4" -> System.out.println("Returned Book Names logic here");
+                case "3" -> {
+                    System.out.println("Enter your library Id");
+                    int libId = Integer.parseInt(sc.nextLine());
+                    List<String> borrowedBooks = borrowService.borrowBooks(libId);
+                    printBookList("Borrowed Book Names logic here",borrowedBooks);
+                }
+                case "4" ->{
+                    System.out.println("Enter your library Id");
+                    int libId = Integer.parseInt(sc.nextLine());
+                    List<String> returnBooks = borrowService.returnBooks(libId);
+                    printBookList("Returned Book Names logic here",returnBooks);
+                }
                 case "5" -> {
-                    format.printBoxedMessage("Search Book ISBN BY title: ");
+                    printBoxedMessage("Search Book ISBN BY title: ");
                     String bookTitle = sc.nextLine();
-                    format.printTitleIsbnTable(bookService.getBookByTitle(bookTitle));
+                    printTitleIsbnTable(bookService.getBookByTitle(bookTitle));
                 }
                 case "6" -> {
-                    format.printBoxedMessage("Get library Id of the user");
+                    printBoxedMessage("Get library Id of the user");
                     String email = sc.nextLine();
-                    Format.libTable(personService.getLibId(email));
+                    libTable(personService.getLibId(email));
                 }
                 case "7" -> back = true;
                 default -> System.out.println("Invalid choice.");

@@ -2,6 +2,7 @@ package service;
 
 import dao.PersonDAO;
 import model.Person;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 public class PersonService {
     private final PersonDAO personDAO;
 
+    @Autowired
     public PersonService(PersonDAO personDAO) {
         this.personDAO = personDAO;
     }

@@ -2,6 +2,8 @@ package service;
 
 import dao.BookDAO;
 import model.Book;
+import org.aspectj.lang.annotation.AdviceName;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.List;
 public class BookService {
     private final BookDAO bookDAO;
 
+    @Autowired
     public BookService(BookDAO bookDAO){
         this.bookDAO = bookDAO;
     }

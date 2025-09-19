@@ -12,4 +12,6 @@ public interface BorrowDAO {
     List<BorrowRecord> findAll();
     void delete(int id);
     void update(BorrowRecord record);
+    List<String> getBorrowedBookNames(int libraryId);
+    List<String> getReturnedBookNames(int libraryId);
 }

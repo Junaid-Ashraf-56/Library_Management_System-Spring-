@@ -2,9 +2,11 @@ package dao;
 
 import model.BorrowRecord;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class BorrowDAOImpl implements BorrowDAO{
     public JdbcTemplate jdbcTemplate;
 
@@ -17,7 +19,7 @@ public class BorrowDAOImpl implements BorrowDAO{
         String sql = "INSERT INTO borrow(borrowId,personId,bookId,borrowDate,returnDate) Values(?,?,?,?,?)";
         jdbcTemplate.update(sql,
                 record.getBorrowId(),
-                record.getPersonId(),
+                record.getLibraryId(),
                 record.getBookId(),
                 record.getBorrowDate(),
                 record.getReturnDate());
@@ -87,8 +89,29 @@ public class BorrowDAOImpl implements BorrowDAO{
         jdbcTemplate.update(sql,
                 record.getReturnDate(),
                 record.getBorrowDate(),
-                record.getPersonId(),
+                record.getLibraryId(),
                 record.getBookId()
         );
     }
+    @Override
+    public List<String> getBorrowedBookNames(int libraryId) {
+        String sql = """
+        SELECT b.title
+        FROM borrow_record br
+        JOIN book b ON br.bookId = b.bookId
+        WHERE br.libraryId = ? AND br.returnDate IS NULL
+    """;
+        return jdbcTemplate.query(sql, new Object[]{libraryId}, (rs, rowNum) -> rs.getString("title"));
+    }
+    @Override
+    public List<String> getReturnedBookNames(int libraryId) {
+        String sql = """
+        SELECT b.title
+        FROM borrow_record br
+        JOIN book b ON br.bookId = b.bookId
+        WHERE br.libraryId = ? AND br.returnDate IS NOT NULL
+    """;
+        return jdbcTemplate.query(sql, new Object[]{libraryId}, (rs, rowNum) -> rs.getString("title"));
+    }
+
 }

@@ -51,7 +51,7 @@ public class BookController {
         borrowService.returnBook(personId,bookId);
     }
 
-    public String bookIsbn(String title){
+    public Book bookIsbn(String title){
         return bookService.getBookByTitle(title);
     }
 }
