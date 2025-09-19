@@ -1,0 +1,11 @@
+╔════════════════════════════════════╗
+║              🙋 USER MENU          ║
+╠════════════════════════════════════╣
+║    1  Borrow Book                  ║
+║    2  Return Book                  ║
+║    3  Name of Borrow Books         ║
+║    4  Name of return Books         ║
+║    5  Book ISBN                    ║
+║    6  Library ID                   ║
+║    7  Back to Main Menu            ║
+╚════════════════════════════════════╝

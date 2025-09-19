@@ -1,81 +1,103 @@
 import controller.AdminController;
+import service.BorrowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import service.BorrowService;
+import service.PersonService;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 @Component
 public class ConsoleUI {
     private final AdminController adminController;
     private final BorrowService borrowService;
+    private final PersonService personService;
 
     @Autowired
-    public ConsoleUI(AdminController adminController, BorrowService borrowService) {
+    public ConsoleUI(AdminController adminController, BorrowService borrowService, PersonService personService) {
         this.adminController = adminController;
         this.borrowService = borrowService;
+        this.personService = personService;
     }
 
-    public void start() {
+    public static void start() {
         Scanner sc = new Scanner(System.in);
         while (true) {
-            printMainMenu();
-            int choice = sc.nextInt();
-            if (choice == 1) {
-                adminMenu(sc);
-            } else if (choice == 2) {
-                userMenu(sc);
-            } else if (choice == 3) {
-                System.out.println("\n👋 Thank you for using the Library System!");
-                break;
-            } else {
-                System.out.println("❌ Invalid choice. Try again.");
+            printAscii("banner.txt");
+            printAscii("main_menu.txt");
+            System.out.print("Enter your choice: ");
+            String input = sc.nextLine();
+
+            switch (input) {
+                case "1" -> handleAdmin(sc);
+                case "2" -> handleUser(sc);
+                case "3" -> {
+                    System.out.println("\nThank you for using the Library System!");
+                    return;
+                }
+                default -> System.out.println("Invalid choice. Try again.");
             }
         }
     }
 
-    private void printMainMenu() {
-        System.out.println("\n");
-        System.out.println("╔════════════════════════════════════╗");
-        System.out.println("║          📚 LIBRARY SYSTEM         ║");
-        System.out.println("╠════════════════════════════════════╣");
-        System.out.println("║    1  Admin                        ║");
-        System.out.println("║    2  User                         ║");
-        System.out.println("║    3  Exit                         ║");
-        System.out.println("╚════════════════════════════════════╝");
-        System.out.print("👉 Enter your choice: ");
+    private static void handleAdmin(Scanner sc) {
+        printAscii("banner.txt");
+        boolean back = false;
+        while (!back) {
+            printAscii("admin_menu.txt");
+            System.out.print("Enter your choice: ");
+            String input = sc.nextLine();
+
+            switch (input) {
+                case "1" -> System.out.println("🛠 Add Person logic here");
+                case "2" -> System.out.println("📘 Add Book logic here");
+                case "3" -> System.out.println("📝 Manage Books logic here");
+                case "4" -> System.out.println("👥 List Persons logic here");
+                case "5" -> System.out.println("📚 List Books logic here");
+                case "6" -> System.out.println("❌ Delete Person logic here");
+                case "7" -> System.out.println("❌ Delete Book logic here");
+                case "8" -> back = true;
+                default -> System.out.println("❌ Invalid choice.");
+            }
+        }
     }
 
-    private void adminMenu(Scanner sc) {
-        System.out.println("\n");
-        System.out.println("╔════════════════════════════════════╗");
-        System.out.println("║             👨‍💼 ADMIN MENU          ║");
-        System.out.println("╠════════════════════════════════════╣");
-        System.out.println("║    1  Add Person                   ║");
-        System.out.println("║    2  Add Book                     ║");
-        System.out.println("║    3  Manage Books                 ║");
-        System.out.println("║    4  List Persons                 ║");
-        System.out.println("║    5  List Books                   ║");
-        System.out.println("║    6  Delete Person                ║");
-        System.out.println("║    7  Delete Book                  ║");
-        System.out.println("║    8  Back to Main Menu            ║");
-        System.out.println("╚════════════════════════════════════╝");
-        System.out.print("👉 Enter your choice: ");
+    private static void handleUser(Scanner sc) {
+        printAscii("banner.txt");
+        boolean back = false;
+        while (!back) {
+            printAscii("user_menu.txt");
+            System.out.print("Enter your choice: ");
+            String input = sc.nextLine();
+
+            switch (input) {
+                case "1" -> System.out.println("📖 Borrow Book logic here");
+                case "2" -> System.out.println("📤 Return Book logic here");
+                case "3" -> System.out.println("📚 Borrowed Book Names logic here");
+                case "4" -> System.out.println("📚 Returned Book Names logic here");
+                case "5" -> System.out.println("🔍 Book ISBN logic here");
+                case "6" -> System.out.println("🆔 Library ID logic here");
+                case "7" -> back = true;
+                default -> System.out.println("❌ Invalid choice.");
+            }
+        }
     }
 
-    private void userMenu(Scanner sc) {
-        System.out.println("\n");
-        System.out.println("╔════════════════════════════════════╗");
-        System.out.println("║              🙋 USER MENU          ║");
-        System.out.println("╠════════════════════════════════════╣");
-        System.out.println("║    1  Borrow Book                  ║");
-        System.out.println("║    2  Return Book                  ║");
-        System.out.println("║    3  Name of Borrow Books         ║");
-        System.out.println("║    4  Name of return Books         ║");
-        System.out.println("║    5  Book ISBN                    ║");
-        System.out.println("║    6  Library ID                   ║");
-        System.out.println("║    7  Back to Main Menu            ║");
-        System.out.println("╚════════════════════════════════════╝");
-        System.out.print("👉 Enter your choice: ");
+    private static void printAscii(String fileName) {
+        try {
+            Files.lines(Paths.get("src/main/resources/ascii/" + fileName))
+                    .forEach(System.out::println);
+        } catch (IOException e) {
+            System.out.println("Could not load " + fileName);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner abc = new Scanner(System.in);
+        start();
+        handleAdmin(abc);
+        handleUser(abc);
     }
 }
