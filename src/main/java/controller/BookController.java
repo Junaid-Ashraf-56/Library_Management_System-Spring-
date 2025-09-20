@@ -3,55 +3,50 @@ package controller;
 import model.Book;
 import service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import service.BorrowService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/books")
 public class BookController {
+
     private final BookService bookService;
-    private final BorrowService borrowService;
+
     @Autowired
-    public BookController(BookService bookService, BorrowService borrowService) {
+    public BookController(BookService bookService) {
         this.bookService = bookService;
-        this.borrowService = borrowService;
     }
-    @PostMapping
-    public String addBook(@RequestBody Book book) {
+
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    public ResponseEntity<String> addBook(@RequestBody Book book) {
         bookService.addBook(book);
-        return "Book added successfully!";
+        return ResponseEntity.ok("Book added successfully!");
     }
-    @GetMapping
-    public List<Book> getAllBooks() {
-        return bookService.getAllBook();
+
+    @GetMapping(produces = "application/json")
+    public ResponseEntity<List<Book>> getAllBooks() {
+        List<Book> books = bookService.getAllBook();
+        return ResponseEntity.ok(books);
     }
-    @GetMapping("/{id}")
-    public Book getBookById(@PathVariable int id) {
-        return bookService.getBookById(id);
+
+    @GetMapping(value = "/{id}", produces = "application/json")
+    public ResponseEntity<Book> getBookById(@PathVariable int id) {
+        Book book = bookService.getBookById(id);
+        return ResponseEntity.ok(book);
     }
-    @PutMapping("/{id}")
-    public String updateBook(@PathVariable int id, @RequestBody Book book) {
+
+    @PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<String> updateBook(@PathVariable int id, @RequestBody Book book) {
         book.setBookId(id);
         bookService.updateBook(book);
-        return "Book updated successfully!";
+        return ResponseEntity.ok("Book updated successfully!");
     }
-    @DeleteMapping("/{id}")
-    public String deleteBook(@PathVariable int id) {
+
+    @DeleteMapping(value = "/{id}", produces = "application/json")
+    public ResponseEntity<String> deleteBook(@PathVariable int id) {
         bookService.deleteBook(id);
-        return "Book deleted successfully!";
-    }
-
-    public void borrowBook(int personId,int bookId){
-        borrowService.borrowBook(personId,bookId);
-    }
-
-    public void returnBook(int personId,int bookId){
-        borrowService.returnBook(personId,bookId);
-    }
-
-    public Book bookIsbn(String title){
-        return bookService.getBookByTitle(title);
+        return ResponseEntity.ok("Book deleted successfully!");
     }
 }
