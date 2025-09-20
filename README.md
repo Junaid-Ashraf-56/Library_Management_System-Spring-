@@ -26,6 +26,20 @@ mvn clean install
 # Run the application
 java -jar target/library-management-system-0.0.1-SNAPSHOT.jar
 ````
+---
+<h2> Blog Posts</h2>
+
+<p>For a deeper understanding of the concepts used in this project, check out my Hashnode blogs:</p>
+
+<ul>
+  <li> <a href="https://how-pom-xml-works-practical-guide.hashnode.dev" target="_blank">
+    Maven POM: How It Simplifies Java Projects
+  </a></li>
+  
+  <li> <a href="https://java-vs-spring-jdbc-transactions.hashnode.dev/" target="_blank">
+    Spring JDBC & Transactions: Handling Data the Smart Way
+  </a></li>
+</ul>
 
 ---
 
