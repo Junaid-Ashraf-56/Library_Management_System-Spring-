@@ -27,7 +27,7 @@ public class ConsoleUI {
 
 
     @Autowired
-    public ConsoleUI(AdminController adminController, BorrowService borrowService, PersonService personService, BookService bookService, Format format) {
+    public ConsoleUI(AdminController adminController, BorrowService borrowService, PersonService personService, BookService bookService) {
         this.adminController = adminController;
         this.borrowService = borrowService;
         this.personService = personService;
@@ -213,11 +213,13 @@ public class ConsoleUI {
                 }
                 case "5" -> {
                     printBoxedMessage("Search Book ISBN BY title: ");
+                    System.out.println("Enter Book Title ");
                     String bookTitle = sc.nextLine();
                     printTitleIsbnTable(bookService.getBookByTitle(bookTitle));
                 }
                 case "6" -> {
                     printBoxedMessage("Get library Id of the user");
+                    System.out.println("Enter you Email");
                     String email = sc.nextLine();
                     libTable(personService.getLibId(email));
                 }
