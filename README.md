@@ -1,4 +1,4 @@
-## 🚀 Tech Stack
+##  Tech Stack
 
 ![Java](https://img.shields.io/badge/Java-11%2B-blue?logo=openjdk)
 ![Spring](https://img.shields.io/badge/Spring-MVC%20%7C%20JDBC%20%7C%20AOP-brightgreen?logo=spring)
@@ -11,7 +11,7 @@ A **modular Library Management System** built using **Java, Spring MVC, Spring J
 
 ---
 
-## 🚀 Quick Start  
+##  Quick Start  
 
 Get the project running in just a few steps:  
 
@@ -29,7 +29,7 @@ java -jar target/library-management-system-0.0.1-SNAPSHOT.jar
 
 ---
 
-## 📖 Table of Contents
+##  Table of Contents
 
 * [Features](#features)
 * [Tech Stack](#tech-stack)
@@ -45,7 +45,7 @@ java -jar target/library-management-system-0.0.1-SNAPSHOT.jar
 
 ---
 
-## ✨ Features
+##  Features
 
 * **Book Management**: Add, update, delete, and list books.
 * **User Management**: Manage library members and librarians.
@@ -195,7 +195,7 @@ Contributions are welcome!
 * **Spring Framework** – for modular development
 * **JUnit & Mockito** – for testing support
 * **Clean Architecture (Robert C. Martin)** – design inspiration
-* **Baeldung** – helpful Spring/JUnit tutorials
+* **Baeldung** – helpful Spring/JUnit
 
 ---
 ✨ **Thank you for using and contributing to this Library Management System!**
